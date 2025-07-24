@@ -71,3 +71,36 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.container-livros {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+section {
+  flex: 1;
+  min-width: 280px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 15px;
+}
+
+section h3 {
+  margin-top: 0;
+  color: #5a3e36;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
