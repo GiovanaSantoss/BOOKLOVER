@@ -47,7 +47,30 @@ if ($result && $result->num_rows > 0) {
             echo "<div>";
 			
             foreach ($livros as $livro) {
-				echo "<div style='border:1px solid #ccc; border-radius:10px; padding:5px; margin:10px; width:180px; text-align:center;'>";
+				echo "<div style='position: relative; border:1px solid #ccc; border-radius:10px; padding:5px; margin:10px; width:180px; text-align:center;'>";
+
+				echo "<a href='excluir.php?id={$livro['id']}' 
+                    onclick='return confirm(\"Tem certeza que quer excluir esse livro?\")' 
+                    style='
+                        position: absolute;
+                        top: 5px;
+                        right: 5px;
+                        color: red;
+                        font-weight: bold;
+                        font-size: 15px;
+                        text-decoration: none;
+                        cursor: pointer;
+						background-color: pink;
+						border-radius: 50%;
+						width: 20px;
+						height: 20px;
+						line-height: 20px;
+						text-align: center;
+						padding: 0;
+                    '
+                    title='Excluir livro'
+                >×</a>";
+
 
 				if (!empty($livro['capa'])) {
 					echo "<img src='" . htmlspecialchars($livro['capa']) . "' alt='Capa de {$livro['titulo']}' style='width:120px; height:auto; margin-bottom:10px;'>";
@@ -83,7 +106,6 @@ if ($result && $result->num_rows > 0) {
                 echo "<button type='submit'>Atualizar</button>";
                 echo "</form>";
             }
-
 
 				echo "</div>";
 			}
