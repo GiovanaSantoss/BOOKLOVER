@@ -1,0 +1,73 @@
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #fff0f5; /* rosa clarinho */
+    color: #5a3e57; /* um vinho delicado */
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #c94f7c;
+	font-family: 'Dancing Script', cursive;
+}
+
+h2 {
+	color: #c94f7c;
+}
+
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(201, 79, 124, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+input:focus {
+    border-color: #f7a4c1;
+    outline: none;
+}
+
+button {
+    background-color: #f7a4c1;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e1739a;
+}
+
+a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #c94f7c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
