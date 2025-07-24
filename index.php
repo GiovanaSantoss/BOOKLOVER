@@ -40,21 +40,54 @@ if ($result && $result->num_rows > 0) {
 	<a href="cadastrar.php">Cadastrar novo livro</a>
 	
 	<?php
-    function exibirLivros($tituloSessao, $livros) {
+    function exibirLivros($conn, $tituloSessao, $livros) {
         if (!empty($livros)) {
             echo "<section>";
             echo "<h3>$tituloSessao</h3>";
-            echo "<ul>";
+            echo "<div>";
+			
             foreach ($livros as $livro) {
-                echo "<li>";
-                echo "<strong>" . htmlspecialchars($livro['titulo']) . "</strong> - ";
-                echo "Autor: " . htmlspecialchars($livro['autor']) . " - ";
-                echo "Páginas: " . $livro['total_paginas'] . " ";
-                echo "<a href='excluir.php?id={$livro['id']}' onclick='return confirm(\"Tem certeza que quer excluir esse livro?\")'>🗑️ </a> ";
-                echo "<a href='alterar.php?id={$livro['id']}'>✏️ </a>";
-                echo "</li>";
+				echo "<div style='border:1px solid #ccc; border-radius:10px; padding:5px; margin:10px; width:180px; text-align:center;'>";
+
+				if (!empty($livro['capa'])) {
+					echo "<img src='" . htmlspecialchars($livro['capa']) . "' alt='Capa de {$livro['titulo']}' style='width:120px; height:auto; margin-bottom:10px;'>";
+				} else {
+					echo "<div style='width:120px; height:180px; background:#eee; display:flex; align-items:center; justify-content:center; margin:0 auto 10px auto;'>Sem capa</div>";
+				}
+
+				echo "<div><strong>" . htmlspecialchars($livro['titulo']) . "</strong></div>";
+				echo "<div>Autor: " . htmlspecialchars($livro['autor']) . "</div>";
+				echo "<div>Páginas: " . htmlspecialchars($livro['total_paginas']) . "</div>";
+				
+				 if ($tituloSessao === '📖 Lendo') {
+               
+                $stmt = $conn->prepare("SELECT MAX(paginas_lidas) as paginas_lidas FROM progresso WHERE id_livro = ?");
+                $stmt->bind_param("i", $livro['id']);
+                $stmt->execute();
+                $res = $stmt->get_result()->fetch_assoc();
+                $paginasLidas = $res['paginas_lidas'] ?? 0;
+                $stmt->close();
+
+                $totalPaginas = (int)$livro['total_paginas'];
+                $percent = $totalPaginas > 0 ? round(($paginasLidas / $totalPaginas) * 100) : 0;
+
+                echo "<div style='margin:10px 0;'>";
+                echo "<label>Progresso: $paginasLidas / $totalPaginas páginas ($percent%)</label><br>";
+                echo "<progress value='$paginasLidas' max='$totalPaginas' style='width:100%;'></progress>";
+                echo "</div>";
+
+               
+                echo "<form method='POST' action='atualizar_progresso.php'>";
+                echo "<input type='hidden' name='id_livro' value='" . $livro['id'] . "'>";
+                echo "<input type='number' name='paginas_lidas' min='$paginasLidas' max='$totalPaginas' placeholder='Páginas lidas' required style='width:60%;'>";
+                echo "<button type='submit'>Atualizar</button>";
+                echo "</form>";
             }
-            echo "</ul>";
+
+
+				echo "</div>";
+			}
+            echo "</div>";
             echo "</section>";
         }
     }
@@ -62,9 +95,10 @@ if ($result && $result->num_rows > 0) {
 
     <div class="container-livros">
 <?php
-    exibirLivros("📚 Quero Ler", $queroLer);
-    exibirLivros("📖 Lendo", $lendo);
-    exibirLivros("✅ Lidos", $lidos);
+
+    exibirLivros($conn, "📚 TBR", $queroLer);
+    exibirLivros($conn, "📖 Lendo", $lendo);
+    exibirLivros($conn, "✅ Lidos", $lidos);
 ?>
 	</div>
 
@@ -75,7 +109,5 @@ if ($result && $result->num_rows > 0) {
 ?>
 	
 	
-	
-
 </body>
 </html>

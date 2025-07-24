@@ -85,7 +85,7 @@ section {
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 15px;
+  padding: 10px;
 }
 
 section h3 {
@@ -103,4 +103,22 @@ ul {
 li {
   margin-bottom: 10px;
   line-height: 1.5;
+}
+
+section > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Garante que as colunas não ultrapassem a largura */
+  gap: 16px;
+  justify-items: stretch;
+  max-width: 100%; /* Garante que o grid não passe da tela */
+  box-sizing: border-box;
+}
+
+section li {
+  width: 100%;
+  max-width: 300px; /* Limita a largura de cada livro */
+  word-wrap: break-word;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
