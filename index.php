@@ -31,6 +31,8 @@ if ($result && $result->num_rows > 0) {
     <title>Lista de Livros</title>
 	<link rel="stylesheet" href="style.css">
 	<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
 
 </head>
 <body>
@@ -41,13 +43,14 @@ if ($result && $result->num_rows > 0) {
 	
 	<?php
     function exibirLivros($conn, $tituloSessao, $livros) {
-        if (!empty($livros)) {
+       
             echo "<section>";
             echo "<h3>$tituloSessao</h3>";
-            echo "<div>";
-			
+            echo "<div style='display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;'>";
+
+			 if (!empty($livros)) {
             foreach ($livros as $livro) {
-				echo "<div style='position: relative; border:1px solid #ccc; border-radius:10px; padding:5px; margin:10px; width:180px; text-align:center;'>";
+				echo "<div style='position: relative; border:1px solid #ccc; border-radius:10px; padding:5px; width:180px; text-align:center;'>";
 
 				echo "<a href='excluir.php?id={$livro['id']}' 
                     onclick='return confirm(\"Tem certeza que quer excluir esse livro?\")' 
@@ -109,9 +112,16 @@ if ($result && $result->num_rows > 0) {
 
 				echo "</div>";
 			}
+		} else {
+			echo "<div style='grid-column: 1 / span 2; display: flex; justify-content: center; align-items: center; height: 200px;'>";
+			echo "<p style='color: #d35477; font-style: italic; font-family: \"Poppins\", sans-serif; font-size: 15px; font-weight: bold;'>";
+			echo "Ops, ainda não tem nenhum livro por aqui... Que tal adicionar um? 💖";
+			echo "</p>";
+			echo "</div>";
+		}
             echo "</div>";
             echo "</section>";
-        }
+        
     }
 	?>
 
