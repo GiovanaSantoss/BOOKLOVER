@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST['email']);
     $senha = trim($_POST['senha']);
 
-    // Verifica se o e-mail já existe
+    
     $sql = "SELECT id FROM usuarios WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Location: login.php");
         exit;
     } else {
-        // Cadastra o usuário
+        
         $senhaCriptografada = password_hash($senha, PASSWORD_DEFAULT);
         $sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['usuario_email'] = $email;
             $_SESSION['usuario_nome'] = $nome;
 
-            header("Location: dashboard.php");
+            header("Location: index.php");
             exit;
         } else {
             $_SESSION['mensagem'] = "Erro ao cadastrar. Tente novamente.";
@@ -51,14 +51,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <title>Cadastro - BOOKLOVER</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
   <link href="css/styleLogin.css" rel="stylesheet">
-  
 </head>
 
 <body>
 <div class="container">
-
     <h1 class="titulo">Cadastro</h1>
-	
 <?php
 if (isset($_SESSION['mensagem'])) {
     echo "
@@ -79,19 +76,19 @@ if (isset($_SESSION['mensagem'])) {
     unset($_SESSION['mensagem']);
 }
 ?>
-
 		<form action="cadastro.php" method="POST">
 		  <label>Nome:</label><br>
-	  <input type="text" name="nome" required><br><br>
+		  <input type="text" name="nome" required><br><br>
 
-	  <label>Email:</label><br>
-	  <input type="email" name="email" required><br><br>
+		  <label>Email:</label><br>
+		  <input type="email" name="email" required><br><br>
 
-	  <label>Senha:</label><br>
-	  <input type="password" name="senha" required><br><br>
+		  <label>Senha:</label><br>
+		  <input type="password" name="senha" required><br><br>
 
-	  <button type="submit" class="botao">Cadastrar</button>
-    </form>
+		  <button type="submit" class="botao">Cadastrar</button>
+		</form>
+		
     <a href="landing.php" class="voltar">← Voltar para o início</a>
   </div>
 </body>
