@@ -1,0 +1,82 @@
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #FFD1DC;
+      font-family: 'Georgia', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('images/imagemfundo.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #FFB6C1;
+      text-align: center;
+      width: 350px;
+    }
+
+    .titulo {
+      font-size: 3em;
+      font-family: 'Dancing Script', cursive;
+      color: #FF69B4;
+      margin-bottom: 20px;
+      
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      color: #8B008B;
+      text-align: left;
+    }
+
+    input[type="text"],
+    input[type="password"],
+	input[type="email"]	{
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      font-size: 1em;
+    }
+
+    .botao {
+      margin-top: 25px;
+      background-color: #FF69B4;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .botao:hover {
+      background-color: #FAEBD7;
+      color: #FF1493;
+    }
+
+    .voltar {
+      display: block;
+      margin-top: 20px;
+      color: #8B008B;
+      text-decoration: none;
+      font-size: 0.9em;
+    }
+
+    .voltar:hover {
+      text-decoration: underline;
+    }
