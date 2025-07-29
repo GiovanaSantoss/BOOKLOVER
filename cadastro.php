@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->bind_param("sss", $nome, $email, $senhaCriptografada);
 
         if ($stmt->execute()) {
-            $_SESSION['usuario_id'] = $stmt->insert_id;
+            $_SESSION['usuario_id'] = $conn->insert_id;
             $_SESSION['usuario_email'] = $email;
             $_SESSION['usuario_nome'] = $nome;
 

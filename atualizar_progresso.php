@@ -5,9 +5,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_livro = intval($_POST['id_livro']);
     $paginas_lidas = intval($_POST['paginas_lidas']);
 
-    // Validações básicas
+
     if ($id_livro > 0 && $paginas_lidas >= 0) {
-        $stmt = $conn->prepare("INSERT INTO progresso (id_livro, paginas_lidas, data_leitura) VALUES (?, ?, NOW())");
+        $stmt = $conn->prepare("INSERT INTO status (id_livro, paginas_lidas, data_leitura) VALUES (?, ?, NOW())");
         $stmt->bind_param("ii", $id_livro, $paginas_lidas);
         if ($stmt->execute()) {
             header('Location: index.php');

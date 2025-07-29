@@ -7,7 +7,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
 
-    // Busca o usuário pelo e-mail
     $sql = "SELECT * FROM usuarios WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
@@ -27,13 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             header("Location: index.php");
             exit;
         } else {
-            // Senha incorreta
+           
             $_SESSION['mensagem'] = "Senha incorreta. Tente novamente.";
             header("Location: login.php");
             exit;
         }
     } else {
-        // E-mail não encontrado - redireciona para cadastro
+
         $_SESSION['mensagem'] = "E-mail não encontrado. Faça seu cadastro!";
         header("Location: cadastro.php");
         exit;

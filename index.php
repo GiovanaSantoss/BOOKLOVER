@@ -2,7 +2,6 @@
 session_start();
 require 'conexao.php';
 
-// Redireciona se não estiver logado
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit;
@@ -11,8 +10,12 @@ if (!isset($_SESSION['usuario_id'])) {
 $usuarioId = $_SESSION['usuario_id'];
 $usuarioNome = $_SESSION['usuario_nome'];
 
-// Só mostra os livros do usuário logado
-$sql = "SELECT * FROM books WHERE usuario_id = ? ORDER BY data_cadastro DESC";
+$sql = "SELECT books.*, status.status 
+        FROM books 
+        JOIN status ON books.id = status.id_livro 
+        WHERE books.usuario_id = ? 
+        ORDER BY books.data_cadastro DESC";
+
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $usuarioId);
 $stmt->execute();
@@ -24,7 +27,7 @@ $lidos = [];
 
 if ($result && $result->num_rows > 0) {
     while ($livro = $result->fetch_assoc()) {
-        $status = strtolower($livro['status']);
+        $status = strtolower($livro['status']); 
         if ($status == 'quero ler') {
             $queroLer[] = $livro;
         } elseif ($status == 'lendo') {
@@ -35,6 +38,9 @@ if ($result && $result->num_rows > 0) {
     }
 }
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -47,7 +53,6 @@ if ($result && $result->num_rows > 0) {
 <body>
     <div style="text-align: center;">
         <h2>Olá, <?= htmlspecialchars($usuarioNome) ?>! 💕</h2>
-        <p style="margin-top: -10px;">Aqui estão seus livros:</p>
         <a href="cadastrar.php" style="text-decoration: none; color: #d35477;">+ Adicionar novo livro</a> |
         <a href="logout.php" style="text-decoration: none; color: #888;">Sair</a>
     </div>
