@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['titulo']) && isset($_P
     $status = $_POST['status'];
 	$capa = $_POST['capa'];
 
-    $sql = "INSERT INTO livros (titulo, autor, genero, editora, total_paginas, status, capa) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO books (titulo, autor, genero, editora, total_paginas, status, capa) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssssss", $titulo, $autor, $genero, $editora, $total_paginas, $status, $capa);
 

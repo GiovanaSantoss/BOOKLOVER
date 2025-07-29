@@ -1,7 +1,8 @@
 <?php
+
 require 'conexao.php';
 
-$sql = "SELECT * FROM livros ORDER BY data_cadastro DESC";
+$sql = "SELECT * FROM books ORDER BY data_cadastro DESC";
 $result = $conn->query($sql);
 
 $queroLer = [];
@@ -30,26 +31,25 @@ if ($result && $result->num_rows > 0) {
     <meta charset="UTF-8">
     <title>Lista de Livros</title>
 	<link rel="stylesheet" href="style.css">
-	<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
 
 </head>
 <body>
-    <h1>BOOKLOVER</h1>
+    
 	<h2>Meus Livros</h2>
 	
 	<a href="cadastrar.php">Cadastrar novo livro</a>
 	
 	<?php
-    function exibirLivros($conn, $tituloSessao, $livros) {
+    function exibirlivros($conn, $tituloSessao, $livro) {
        
             echo "<section>";
             echo "<h3>$tituloSessao</h3>";
             echo "<div style='display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;'>";
 
-			 if (!empty($livros)) {
-            foreach ($livros as $livro) {
+			 if (!empty($livro)) {
+            foreach ($livro as $livro) {
 				echo "<div style='position: relative; border:1px solid #ccc; border-radius:10px; padding:5px; width:180px; text-align:center;'>";
 
 				echo "<a href='excluir.php?id={$livro['id']}' 
@@ -87,7 +87,7 @@ if ($result && $result->num_rows > 0) {
 				
 				 if ($tituloSessao === '📖 Lendo') {
                
-                $stmt = $conn->prepare("SELECT MAX(paginas_lidas) as paginas_lidas FROM progresso WHERE id_livro = ?");
+                $stmt = $conn->prepare("SELECT MAX(paginas_lidas) as paginas_lidas FROM status WHERE id_livro = ?");
                 $stmt->bind_param("i", $livro['id']);
                 $stmt->execute();
                 $res = $stmt->get_result()->fetch_assoc();
@@ -128,17 +128,12 @@ if ($result && $result->num_rows > 0) {
     <div class="container-livros">
 <?php
 
-    exibirLivros($conn, "📚 TBR", $queroLer);
-    exibirLivros($conn, "📖 Lendo", $lendo);
-    exibirLivros($conn, "✅ Lidos", $lidos);
+    exibirlivros($conn, "📚 TBR", $queroLer);
+    exibirlivros($conn, "📖 Lendo", $lendo);
+    exibirlivros($conn, "✅ Lidos", $lidos);
 ?>
 	</div>
 
-<?php
-    if (empty($queroLer) && empty($lendo) && empty($lidos)) {
-        echo "<p>Nenhum livro cadastrado ainda.</p>";
-    }
-?>
 	
 	
 </body>
