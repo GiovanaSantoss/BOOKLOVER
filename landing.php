@@ -67,7 +67,7 @@
 <body>
   <div class="container">
     <h1 class="titulo">BOOKLOVER</h1>
-    <p class="frase">“Here's our place, we make the rules!”</p>
+    <p class="frase">“This is our place, we make the rules!”</p>
     <div class="botoes">
       <a href="login.php" class="botao">Login</a>
       <a href="cadastro.php" class="botao">Cadastre-se</a>

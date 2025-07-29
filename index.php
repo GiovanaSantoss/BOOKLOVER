@@ -39,9 +39,6 @@ if ($result && $result->num_rows > 0) {
 }
 ?>
 
-
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -49,20 +46,51 @@ if ($result && $result->num_rows > 0) {
     <title>Meus Livros - BOOKLOVER</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+	 .titulo {
+		  position: absolute;
+		  font-size: 2.5em;
+		  font-family: 'Dancing Script', cursive;
+		  color: #FAEBD7;
+		  text-shadow: 0 0 8px #FFB6C1, 0 0 15px #FF69B4, 0 0 25px #FF1493;
+		  margin-top: 20px;
+		  text-align: right;
+		  width: 100%;
+		  top: 30px;
+		  right: 50px;
+		  margin: 0; 
+		}
+		.saudacao{
+			font-family: 'Montserrat', sans-serif;
+			font-size: 16px;
+		}
+
+	</style>
 </head>
 <body>
-    <div style="text-align: center;">
-        <h2>Olá, <?= htmlspecialchars($usuarioNome) ?>! 💕</h2>
-        <a href="cadastrar.php" style="text-decoration: none; color: #d35477;">+ Adicionar novo livro</a> |
-        <a href="logout.php" style="text-decoration: none; color: #888;">Sair</a>
-    </div>
+    <div class="saudacao">
+		<h2>Olá, <?= htmlspecialchars($usuarioNome) ?>! 💕</h2>
+		<a href="cadastrar.php" style="text-decoration: none; color: #d35477; margin-bottom:13px;">+ Adicionar novo livro</a> |
+		<a href="logout.php" style="text-decoration: none; color: #888;">Sair</a>
+	</div>
+
+	<div style="text-align: right;">
+		<h1 class="titulo">BOOKLOVER</h1>
+	</div>
+
+	
+	
 
     <div class="container-livros">
         <?php
         function exibirlivros($conn, $tituloSessao, $livro) {
             echo "<section>";
             echo "<h3>$tituloSessao</h3>";
-            echo "<div style='display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;'>";
+            echo "<div style='display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;' background-color: #FFC0CB;>";
 
             if (!empty($livro)) {
                 foreach ($livro as $livro) {
@@ -99,7 +127,7 @@ if ($result && $result->num_rows > 0) {
                     echo "<div>Autor: " . htmlspecialchars($livro['autor']) . "</div>";
                     echo "<div>Páginas: " . htmlspecialchars($livro['total_paginas']) . "</div>";
 
-                    if ($tituloSessao === '📖 Lendo') {
+                    if ($tituloSessao === ' Lendo') {
                         $stmt = $conn->prepare("SELECT MAX(paginas_lidas) as paginas_lidas FROM status WHERE id_livro = ?");
                         $stmt->bind_param("i", $livro['id']);
                         $stmt->execute();
@@ -134,9 +162,9 @@ if ($result && $result->num_rows > 0) {
             echo "</section>";
         }
 
-        exibirlivros($conn, "📚 TBR", $queroLer);
-        exibirlivros($conn, "📖 Lendo", $lendo);
-        exibirlivros($conn, "✅ Lidos", $lidos);
+        exibirlivros($conn, " TBR", $queroLer);
+        exibirlivros($conn, " Lendo", $lendo);
+        exibirlivros($conn, " Lidos", $lidos);
         ?>
     </div>
 </body>
