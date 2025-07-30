@@ -47,36 +47,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['titulo'])) {
   <title>Cadastrar Livro</title>
   <link rel="stylesheet" href="style.css">
   <script>
-    function buscarLivro() {
-      const titulo = document.getElementById('titulo').value;
-      const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(titulo)}`;
+  function buscarLivro() {
+    const titulo = document.getElementById('titulo').value;
+    const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(titulo)}`;
 
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          if (data.totalItems > 0) {
-            const livro = data.items[0].volumeInfo;
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const resultados = document.getElementById('resultados');
+        resultados.innerHTML = '';
 
-            document.getElementById('autor').value = livro.authors ? livro.authors.join(', ') : '';
-            document.getElementById('genero').value = livro.categories ? livro.categories.join(', ') : '';
-            document.getElementById('editora').value = livro.publisher || '';
-            document.getElementById('total_paginas').value = livro.pageCount || '';
+        if (!data.items || data.items.length === 0) {
+          resultados.innerHTML = '<p>Nenhum livro encontrado.</p>';
+          return;
+        }
 
-            if (livro.imageLinks && livro.imageLinks.thumbnail) {
-              document.getElementById('capa').value = livro.imageLinks.thumbnail;
-              const capaImg = document.getElementById('capa-preview');
-              capaImg.src = livro.imageLinks.thumbnail;
-              capaImg.style.display = 'block';
-            }
-          } else {
-            alert('Livro não encontrado!');
-          }
-        })
-        .catch(error => {
-          console.error('Erro ao buscar livro:', error);
+        data.items.forEach((item, index) => {
+          const livro = item.volumeInfo;
+
+          const titulo = livro.title || "Sem título";
+          const autores = livro.authors ? livro.authors.join(', ') : "Autor desconhecido";
+          const genero = livro.categories ? livro.categories.join(', ') : "Gênero indefinido";
+          const editora = livro.publisher || "Editora desconhecida";
+          const paginas = livro.pageCount || "";
+          const capa = livro.imageLinks?.thumbnail || "";
+
+          const livroDiv = document.createElement('div');
+          livroDiv.style.border = "1px solid #ccc";
+          livroDiv.style.marginBottom = "10px";
+          livroDiv.style.padding = "10px";
+
+          livroDiv.innerHTML = `
+            <strong>${titulo}</strong><br>
+            <em>${autores}</em><br>
+            ${capa ? `<img src="${capa}" alt="${titulo}" style="max-width: 100px;"><br>` : ""}
+            <button onclick='preencherCampos(${JSON.stringify({
+              titulo,
+              autores,
+              genero,
+              editora,
+              paginas,
+              capa
+            })})'>Selecionar</button>
+          `;
+
+          resultados.appendChild(livroDiv);
         });
-    }
-  </script>
+      })
+      .catch(error => {
+        console.error('Erro ao buscar livro:', error);
+      });
+  }
+
+  function preencherCampos(livro) {
+    document.getElementById('titulo').value = livro.titulo;
+    document.getElementById('autor').value = livro.autores;
+    document.getElementById('genero').value = livro.genero;
+    document.getElementById('editora').value = livro.editora;
+    document.getElementById('total_paginas').value = livro.paginas;
+    document.getElementById('capa').value = livro.capa;
+
+    const capaImg = document.getElementById('capa-preview');
+    if (livro.capa) {
+      capaImg.src = livro.capa;
+      capaImg.style.display = 'block';
+    }    
+    document.getElementById('resultados').innerHTML = '';
+  }
+</script>
+
 </head>
 <body>
   <h1>Cadastro de Livro</h1>
@@ -84,7 +123,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['titulo'])) {
   <form method="POST" action="cadastrar.php">
     <label>Título: <input type="text" name="titulo" id="titulo" required></label>
     <button type="button" id="buscar" onclick="buscarLivro()">Buscar</button><br><br>
-
+	<div id="resultados" style="margin-top: 20px;"></div>
+	
     <label>Autor: <input type="text" name="autor" id="autor" required></label><br><br>
     <label>Gênero: <input type="text" name="genero" id="genero" required></label><br><br>
     <label>Editora: <input type="text" name="editora" id="editora" required></label><br><br>
