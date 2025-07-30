@@ -171,6 +171,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['titulo'])) {
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
   <style>
+	body{
+	  background-image: url('images/wallpaper.png');
+	  background-repeat: no-repeat;
+	  background-size: cover;
+	  background-position: center;
+	}
 	 .titulo {
 		  position: absolute;
 		  font-size: 2.5em;
