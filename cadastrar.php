@@ -197,6 +197,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['titulo'])) {
 		text-align: center;
 		font-size: 20px;
 	}
+	
+	.container-taylor {
+	  position: absolute;
+	  top: 110px;
+	  right: 40px;
+	  max-width: 250px;
+	  text-align: center;
+	  font-family: 'Dancing Script', cursive;
+	  animation: aparecer 1s ease-in-out;
+	}
+
+	.album-img {
+	  width: 100%;
+	  border-radius: 12px;
+	  box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+	  margin-bottom: 10px;
+	  top: 20px;
+	}
+
+	.spotify-icon {
+	  width: 40px;
+	  height: 40px;
+	  cursor: pointer;
+	  transition: transform 0.3s ease;
+	}
+
+	.spotify-icon:hover {
+	  transform: scale(1.2);
+	}
+
+	@keyframes aparecer {
+	  from { opacity: 0; transform: translateY(20px); }
+	  to { opacity: 1; transform: translateY(0); }
+	}
+
   </style>
 
   <script>
@@ -298,6 +333,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['titulo'])) {
 
     <button type="submit">Cadastrar</button>
   </form>
+  
+     <div class="container-taylor">
+	  <img src="images/tayloralbum.png" alt="Álbum Lover" class="album-img">
+	  <a href="https://open.spotify.com/album/1NAmidJlEaVgA3MpcPFYGq" target="_blank">
+		<img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="Ouça no Spotify" class="spotify-icon">
+	  </a>
+	</div>
+
+  
+  
 
   <br><a href="index.php">Voltar para a lista</a>
 </body>
