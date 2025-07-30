@@ -81,8 +81,6 @@ if ($result && $result->num_rows > 0) {
 	<div style="text-align: right;">
 		<h1 class="titulo">BOOKLOVER</h1>
 	</div>
-
-	
 	
 
     <div class="container-livros">
