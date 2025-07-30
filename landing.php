@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Minha Biblioteca</title>
+  <title>BOOKLOVER</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
   <style>
     * {
@@ -18,10 +18,11 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-	  background-image: url('images/imagemfundo.png');
-	  background-repeat: no-repeat;
-	  background-size: cover;
-	  background-position: center;
+	    background-image: url('images/imagemfundo.png');
+	    background-repeat: no-repeat;
+  	  background-position: center;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+      background-size: hover;
     }
 
     .container {
@@ -29,11 +30,18 @@
     }
 
     .titulo {
-      font-size: 4.3em;
+      font-size: 6em;
       font-family: 'Dancing Script', cursive;
       color: #FAEBD7;
       margin-bottom: 10px;
-	  text-shadow: 0 0 8px #FFB6C1, 0 0 15px #FF69B4, 0 0 25px #FF1493;
+	    text-shadow: 0 0 8px #FFB6C1, 0 0 15px #FF69B4, 0 0 25px #FF1493;
+      transition: all 0.3s ease-in-out;
+      cursor: default;
+    }
+
+    .titulo:hover {
+      text-shadow: 0 0 12px #FFB6C1, 0 0 25px #FF69B4, 0 0 40px #FF1493, 0 0 60px #FF1493;
+      color: #ffffff;
     }
 
     .frase {
@@ -52,7 +60,6 @@
       padding: 10px 25px;
       font-size: 1.3em;
       text-decoration: none;
-      background-color: ;
       color: white;
       border-radius: 8px;
       transition: background 0.3s;
@@ -62,6 +69,19 @@
       background-color: #FAEBD7;
 	  color: #FF1493;
     }
+
+    .icone {
+      width: 40px;
+      margin: 10px;
+      filter: drop-shadow(0 0 5px pink);
+      transition: transform 0.2s;
+    }
+    .icone:hover {
+      transform: scale(1.2);
+    }
+
+  
+
   </style>
 </head>
 <body>
@@ -72,6 +92,13 @@
       <a href="login.php" class="botao">Login</a>
       <a href="cadastro.php" class="botao">Cadastre-se</a>
     </div>
+    <div class="icones">
+      <a href="https://open.spotify.com/intl-pt/artist/06HL4z0CvFAxyc27GXpf02?si=TIAegWSPSWatr1IxdX80Lwz" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="Spotify" class="icone">
+      </a>
+    </div>
   </div>
+
+
 </body>
 </html>
