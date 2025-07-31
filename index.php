@@ -68,6 +68,70 @@ if ($result && $result->num_rows > 0) {
 			font-family: 'Montserrat', sans-serif;
 			font-size: 16px;
 		}
+		.layout-livros {
+			display: flex;
+			gap: 20px;
+			align-items: flex-start;
+			padding: 20px;
+			box-sizing: border-box;
+		}
+
+		
+		.menu-lateral {
+			width: 180px;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			margin-top: 20px;
+		}
+
+		.menu-lateral .botao-secao {
+			width: 100%;
+			padding: 12px;
+			border-radius: 25px;
+			background-color: #f7a4c1;
+			color: white;
+			border: none;
+			font-weight: bold;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+			font-size: 14px;
+			text-align: left;
+		}
+
+		.menu-lateral .botao-secao:hover {
+			background-color: #e1739a;
+		}
+
+		
+		.container-livros {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			background: #fff8f8cc;
+			padding: 20px;
+			border-radius: 15px;
+			box-shadow: 0 0 15px rgba(0,0,0,0.05);
+		}
+
+		
+		.secao-livros section > div {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+			gap: 20px;
+		}
+
+		
+		.secao-livros {
+			display: none;
+		}
+
+		.secao-livros.ativa {
+			display: block;
+		}
+
+
+
 
 	</style>
 </head>
@@ -77,6 +141,14 @@ if ($result && $result->num_rows > 0) {
 		<a href="cadastrar.php" style="text-decoration: none; color: #d35477; margin-bottom:13px;">+ Adicionar novo livro</a> |
 		<a href="logout.php" style="text-decoration: none; color: #888;">Sair</a>
 	</div>
+	
+	<div class="layout-livros">
+	 <div class="menu-lateral">
+		<button onclick="mostrarSecao('tbr')" class="botao-secao">TBR</button>
+		<button onclick="mostrarSecao('lendo')" class="botao-secao">Lendo</button>
+		<button onclick="mostrarSecao('lidos')" class="botao-secao">Lidos</button>
+	</div>
+
 
 	<div style="text-align: right;">
 		<h1 class="titulo">BOOKLOVER</h1>
@@ -160,10 +232,32 @@ if ($result && $result->num_rows > 0) {
             echo "</section>";
         }
 
-        exibirlivros($conn, " TBR", $queroLer);
-        exibirlivros($conn, " Lendo", $lendo);
-        exibirlivros($conn, " Lidos", $lidos);
-        ?>
-    </div>
+?>
+        <div id="tbr" class="secao-livros">
+			<?php exibirlivros($conn, "TBR", $queroLer); ?>
+		</div>
+
+		<div id="lendo" class="secao-livros">
+			<?php exibirlivros($conn, "Lendo", $lendo); ?>
+		</div>
+
+		<div id="lidos" class="secao-livros">
+			<?php exibirlivros($conn, "Lidos", $lidos); ?>
+		</div>
+		
+	</div>
+	
+	<script>
+		function mostrarSecao(id) {
+		const secoes = document.querySelectorAll('.secao-livros');
+		secoes.forEach(secao => secao.classList.remove('ativa'));
+
+		const ativa = document.getElementById(id);
+		if (ativa) {
+			ativa.classList.add('ativa');
+		}
+	};
+	</script>
+
 </body>
 </html>
