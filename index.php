@@ -53,16 +53,20 @@ if ($result && $result->num_rows > 0) {
 	<style>
 	 .titulo {
 		  position: absolute;
-		  font-size: 2.5em;
+		  font-size: 3.5em;
 		  font-family: 'Dancing Script', cursive;
 		  color: #FAEBD7;
 		  text-shadow: 0 0 8px #FFB6C1, 0 0 15px #FF69B4, 0 0 25px #FF1493;
 		  margin-top: 20px;
-		  text-align: right;
-		  width: 100%;
-		  top: 30px;
-		  right: 50px;
+		  text-align: center;
+		  top: 50px;
+		  left: 45%;
 		  margin: 0; 
+		  cursor: pointer;
+		}
+		.titulo:hover{
+			 text-shadow: 0 0 18px #FFB6C1, 0 0 35px #FF69B4, 0 0 50px #FF1493, 0 0 70px #FF1493;
+		     color: #ffffff;
 		}
 		.saudacao{
 			font-family: 'Montserrat', sans-serif;
@@ -75,8 +79,6 @@ if ($result && $result->num_rows > 0) {
 			padding: 20px;
 			box-sizing: border-box;
 		}
-
-		
 		.menu-lateral {
 			width: 180px;
 			display: flex;
@@ -84,7 +86,6 @@ if ($result && $result->num_rows > 0) {
 			gap: 10px;
 			margin-top: 20px;
 		}
-
 		.menu-lateral .botao-secao {
 			width: 100%;
 			padding: 12px;
@@ -98,12 +99,9 @@ if ($result && $result->num_rows > 0) {
 			font-size: 14px;
 			text-align: left;
 		}
-
 		.menu-lateral .botao-secao:hover {
 			background-color: #e1739a;
 		}
-
-		
 		.container-livros {
 			flex: 1;
 			display: flex;
@@ -112,27 +110,42 @@ if ($result && $result->num_rows > 0) {
 			padding: 20px;
 			border-radius: 15px;
 			box-shadow: 0 0 15px rgba(0,0,0,0.05);
+			background-color: 	#D8A7B1;
 		}
-
-		
 		.secao-livros section > div {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 			gap: 20px;
 		}
-
-		
 		.secao-livros {
 			display: none;
 		}
-
 		.secao-livros.ativa {
 			display: block;
 		}
-
 		.botao-secao.ativo {
 			background-color: #e1739a;
 			box-shadow: 0 0 5px #e1739a;
+		}
+		.estrelas {
+			display: inline-flex;
+			justify-content: center;
+			margin-top: 10px;
+			cursor: pointer;
+		}
+
+		.estrela {
+			font-size: 22px;
+			color: #ccc;
+			transition: color 0.2s;
+		}
+
+		.estrela.ativa {
+			color: #f39c12;
+		}
+		.estrelas .estrela:hover,
+		.estrelas .estrela:hover ~ .estrela {
+			color: gold;
 		}
 
 
@@ -152,8 +165,8 @@ if ($result && $result->num_rows > 0) {
 		<button class="botao-secao" data-id="lidos">Lidos</button>									
 	</div>
 
-	<div style="text-align: right;">
-		<h1 class="titulo">BOOKLOVER</h1>
+	<div style="text-align: center;">
+		 <a href="landing.php" title="Página Inicial"><h1 class="titulo">BOOKLOVER</h1></a> 
 	</div>
 	
     <div class="container-livros">
@@ -161,7 +174,7 @@ if ($result && $result->num_rows > 0) {
         function exibirlivros($conn, $tituloSessao, $livro) {
             echo "<section>";
             echo "<h3>$tituloSessao</h3>";
-            echo "<div style='display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px;' background-color: #FFC0CB;>";
+            echo "<div style='display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px;'>";
 
             if (!empty($livro)) {
                 foreach ($livro as $livro) {
@@ -210,7 +223,7 @@ if ($result && $result->num_rows > 0) {
                         $percent = $totalPaginas > 0 ? round(($paginasLidas / $totalPaginas) * 100) : 0;
 
                         echo "<div style='margin:10px 0;'>";
-                        echo "<label>Progresso: $paginasLidas / $totalPaginas páginas ($percent%)</label><br>";
+                        echo "<label>Páginas: $paginasLidas / $totalPaginas Progresso ($percent%)</label><br>";
                         echo "<progress value='$paginasLidas' max='$totalPaginas' style='width:100%;'></progress>";
                         echo "</div>";
 
@@ -221,12 +234,26 @@ if ($result && $result->num_rows > 0) {
                         echo "</form>";
                     }
 
-                    echo "</div>";
-                }
+                   
+					if ($tituloSessao === 'Lidos') {
+						$livroId = $livro['id'];
+						$avaliacaoAtual = $livro['avaliacao'] ?? 0;
+
+						echo "<div class='estrelas' data-id='$livroId'>";
+						for ($i = 1; $i <= 5; $i++) {
+							$valorEstrela = 6 - $i; // Isso gera os valores 5, 4, 3, 2, 1
+							$classe = $valorEstrela <= $avaliacaoAtual ? 'estrela ativa' : 'estrela';
+							echo "<span class='$classe' data-valor='$valorEstrela'>&#9733;</span>";
+						}
+						echo "</div>";
+					}
+					 echo "</div>";
+                } 
             } else {
-                echo "<div style='grid-column: 1 / span 2; display: flex; justify-content: center; align-items: center; height: 200px;'>";
-                echo "<p style='color: #d35477; font-style: italic; font-family: \"Poppins\", sans-serif; font-size: 15px; font-weight: bold;'>Ops, ainda não tem nenhum livro por aqui... Que tal adicionar um? 💖</p>";
-                echo "</div>";
+               echo "<div style='grid-column: 2 / span 3; display: flex; justify-content: center; align-items: center; height: 100%; min-height: 200px; text-align: center;'>";
+				echo "<p style='color: #d35477; font-style: italic; font-family: \"Poppins\", sans-serif; font-size: 15px; font-weight: bold; max-width: 300px;'>Ops, ainda não tem nenhum livro por aqui... Que tal adicionar um? 💖</p>";
+				echo "</div>";
+
             }
 
             echo "</div>";
@@ -275,6 +302,37 @@ if ($result && $result->num_rows > 0) {
 		});
 	});
 
+	</script>
+	<script>
+	document.querySelectorAll('.estrelas').forEach(container => {
+		const spans = container.querySelectorAll('.estrela');
+
+		spans.forEach(span => {
+			span.addEventListener('click', () => {
+				const valor = span.getAttribute('data-valor');
+				const livroId = container.getAttribute('data-id');
+
+				fetch('salvarAvaliacao.php', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					body: `livro_id=${livroId}&avaliacao=${valor}`
+				})
+				.then(response => response.text())
+				.then(resposta => {
+					if (resposta === 'ok') {
+						spans.forEach(s => {
+							const val = s.getAttribute('data-valor');
+							s.classList.toggle('ativa', val <= valor);
+						});
+					} else {
+						alert("Erro ao salvar avaliação");
+					}
+				});
+			});
+		});
+	});
 	</script>
 </body>
 </html>

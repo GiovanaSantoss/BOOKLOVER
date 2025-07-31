@@ -74,14 +74,6 @@ a {
 a:hover {
     text-decoration: underline;
 }
-
-.container-livros {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: nowrap;
-}
-
 section {
   flex: 1;
   min-width: 280px;
@@ -110,16 +102,16 @@ li {
 
 section > div {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Garante que as colunas não ultrapassem a largura */
+  grid-template-columns: repeat(2, minmax(0, 1fr)); 
   gap: 16px;
   justify-items: stretch;
-  max-width: 100%; /* Garante que o grid não passe da tela */
+  max-width: 100%;
   box-sizing: border-box;
 }
 
 section li {
   width: 100%;
-  max-width: 300px; /* Limita a largura de cada livro */
+  max-width: 300px;
   word-wrap: break-word;
   padding: 10px;
   border: 1px solid #ccc;
