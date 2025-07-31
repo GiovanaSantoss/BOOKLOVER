@@ -130,7 +130,10 @@ if ($result && $result->num_rows > 0) {
 			display: block;
 		}
 
-
+		.botao-secao.ativo {
+			background-color: #e1739a;
+			box-shadow: 0 0 5px #e1739a;
+		}
 
 
 	</style>
@@ -144,23 +147,21 @@ if ($result && $result->num_rows > 0) {
 	
 	<div class="layout-livros">
 	 <div class="menu-lateral">
-		<button onclick="mostrarSecao('tbr')" class="botao-secao">TBR</button>
-		<button onclick="mostrarSecao('lendo')" class="botao-secao">Lendo</button>
-		<button onclick="mostrarSecao('lidos')" class="botao-secao">Lidos</button>
+		<button class="botao-secao ativo" data-id="tbr" style="font-family: ">TBR (To Be Read)</button>
+		<button class="botao-secao" data-id="lendo">Lendo</button>
+		<button class="botao-secao" data-id="lidos">Lidos</button>									
 	</div>
-
 
 	<div style="text-align: right;">
 		<h1 class="titulo">BOOKLOVER</h1>
 	</div>
 	
-
     <div class="container-livros">
         <?php
         function exibirlivros($conn, $tituloSessao, $livro) {
             echo "<section>";
             echo "<h3>$tituloSessao</h3>";
-            echo "<div style='display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;' background-color: #FFC0CB;>";
+            echo "<div style='display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px;' background-color: #FFC0CB;>";
 
             if (!empty($livro)) {
                 foreach ($livro as $livro) {
@@ -197,7 +198,7 @@ if ($result && $result->num_rows > 0) {
                     echo "<div>Autor: " . htmlspecialchars($livro['autor']) . "</div>";
                     echo "<div>Páginas: " . htmlspecialchars($livro['total_paginas']) . "</div>";
 
-                    if ($tituloSessao === ' Lendo') {
+                    if ($tituloSessao === 'Lendo') {
                         $stmt = $conn->prepare("SELECT MAX(paginas_lidas) as paginas_lidas FROM status WHERE id_livro = ?");
                         $stmt->bind_param("i", $livro['id']);
                         $stmt->execute();
@@ -234,7 +235,7 @@ if ($result && $result->num_rows > 0) {
 
 ?>
         <div id="tbr" class="secao-livros">
-			<?php exibirlivros($conn, "TBR", $queroLer); ?>
+			<?php exibirlivros($conn, "TBR (To Be Read)", $queroLer); ?>
 		</div>
 
 		<div id="lendo" class="secao-livros">
@@ -256,8 +257,24 @@ if ($result && $result->num_rows > 0) {
 		if (ativa) {
 			ativa.classList.add('ativa');
 		}
-	};
-	</script>
+		
+		const botoes = document.querySelectorAll('.botao-secao');
+		botoes.forEach(botao => botao.classList.remove('ativo'));
 
+		const botaoClicado = Array.from(botoes).find(b => b.getAttribute('data-id') === id);
+		if (botaoClicado) botaoClicado.classList.add('ativo');
+	}
+	
+	window.onload = () => {
+		mostrarSecao('tbr');
+	};
+	
+	document.querySelectorAll('.botao-secao').forEach(botao => {
+		botao.addEventListener('click', () => {
+			mostrarSecao(botao.getAttribute('data-id'));
+		});
+	});
+
+	</script>
 </body>
 </html>
