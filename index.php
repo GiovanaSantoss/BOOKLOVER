@@ -147,6 +147,20 @@ if ($result && $result->num_rows > 0) {
 		.estrelas .estrela:hover ~ .estrela {
 			color: gold;
 		}
+		
+		.btn-resenha {
+			background: none;
+			border: none;
+			cursor: pointer;
+			font-size: 15px;
+			margin-left: 8px;
+			transition: transform 0.2s;
+		}
+
+		.btn-resenha:hover {
+			transform: scale(1.1);
+		}
+
 
 
 	</style>
@@ -241,11 +255,15 @@ if ($result && $result->num_rows > 0) {
 
 						echo "<div class='estrelas' data-id='$livroId'>";
 						for ($i = 1; $i <= 5; $i++) {
-							$valorEstrela = 6 - $i; // Isso gera os valores 5, 4, 3, 2, 1
+							$valorEstrela = 6 - $i; 
 							$classe = $valorEstrela <= $avaliacaoAtual ? 'estrela ativa' : 'estrela';
 							echo "<span class='$classe' data-valor='$valorEstrela'>&#9733;</span>";
 						}
 						echo "</div>";
+						
+						$resenha = htmlspecialchars($livro['resenha'] ?? '', ENT_QUOTES, 'UTF-8'); 
+						echo "<button class='btn-resenha' data-livro-id='$livroId' data-resenha=\"$resenha\" title='Escrever resenha'>✏️</button>";
+
 					}
 					 echo "</div>";
                 } 
@@ -334,5 +352,36 @@ if ($result && $result->num_rows > 0) {
 		});
 	});
 	</script>
+	
+	<div id="modal-resenha" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; z-index: 999;">
+	<h3>Escreva sua resenha</h3>
+	<form id="form-resenha" method="POST" action="salvarResenha.php">
+		<input type="hidden" name="livro_id" id="livro-id">
+		<textarea name="resenha" id="resenha-texto" rows="5" cols="40" placeholder="Digite aqui..."></textarea><br>
+		<button type="submit">Salvar</button>
+		<button type="button" onclick="fecharModal()">Cancelar</button>
+	</form>
+</div>
+
+	<script>
+	let livroSelecionado = null;
+
+	document.querySelectorAll('.btn-resenha').forEach(btn => {
+		btn.addEventListener('click', () => {
+			const livroSelecionado = btn.dataset.livroId;
+			const resenha = btn.dataset.resenha || '';
+			document.getElementById('livro-id').value = livroSelecionado;
+			document.getElementById('resenha-texto').value = resenha;
+			document.getElementById('modal-resenha').style.display = 'block';
+		});
+	});
+
+	function fecharModal() {
+		document.getElementById('modal-resenha').style.display = 'none';
+		document.getElementById('resenha-texto').value = '';
+	}
+
+	</script>
+
 </body>
 </html>
