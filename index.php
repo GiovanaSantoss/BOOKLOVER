@@ -148,20 +148,66 @@ if ($result && $result->num_rows > 0) {
 			color: gold;
 		}
 		
-		.btn-resenha {
-			background: none;
-			border: none;
-			cursor: pointer;
-			font-size: 15px;
-			margin-left: 8px;
-			transition: transform 0.2s;
+		#modal-resenha {
+		  display: none;
+		  position: fixed;
+		  top: 50%;
+		  left: 50%;
+		  transform: translate(-50%, -50%);
+		  background: #fff;
+		  padding: 30px;
+		  border-radius: 20px;
+		  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+		  z-index: 1000;
+		  width: 90%;
+		  max-width: 500px;
+		  animation: fadeIn 0.3s ease-out;
+		  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 		}
 
-		.btn-resenha:hover {
-			transform: scale(1.1);
+		#modal-resenha textarea {
+		  width: 100%;
+		  height: 150px;
+		  resize: none;
+		  padding: 12px;
+		  border-radius: 10px;
+		  border: 1px solid #ccc;
+		  font-size: 15px;
+		  line-height: 1.5;
+		  outline: none;
+		  transition: border-color 0.2s ease;
 		}
 
+		#modal-resenha textarea:focus {
+		  border-color: #ff69b4; 
+		}
 
+		#modal-resenha button {
+		  margin-top: 15px;
+		  background-color: #e754a3;
+		  color: white;
+		  border: none;
+		  padding: 10px 18px;
+		  border-radius: 10px;
+		  font-size: 14px;
+		  cursor: pointer;
+		  transition: background-color 0.2s ease;
+		}
+
+		#modal-resenha button:hover {
+		  background-color: #ff4e9b;
+		}
+
+		@keyframes fadeIn {
+		  from {
+			opacity: 0;
+			transform: translate(-50%, -55%);
+		  }
+		  to {
+			opacity: 1;
+			transform: translate(-50%, -50%);
+		  }
+		}
 
 	</style>
 </head>
@@ -252,6 +298,10 @@ if ($result && $result->num_rows > 0) {
 					if ($tituloSessao === 'Lidos') {
 						$livroId = $livro['id'];
 						$avaliacaoAtual = $livro['avaliacao'] ?? 0;
+						
+						$abaAtual = $_GET['aba'] ?? 'todos';
+						$msg = $_GET['msg'] ?? null;
+
 
 						echo "<div class='estrelas' data-id='$livroId'>";
 						for ($i = 1; $i <= 5; $i++) {
@@ -353,11 +403,11 @@ if ($result && $result->num_rows > 0) {
 	});
 	</script>
 	
-	<div id="modal-resenha" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; z-index: 999;">
-	<h3>Escreva sua resenha</h3>
-	<form id="form-resenha" method="POST" action="salvarResenha.php">
+	<div id="modal-resenha">
+	<h3>Escreva sua resenha! 💗</h3>
+	<form id="form-resenha" method="POST" action="salvarResenha.php?aba=Lidos">
 		<input type="hidden" name="livro_id" id="livro-id">
-		<textarea name="resenha" id="resenha-texto" rows="5" cols="40" placeholder="Digite aqui..."></textarea><br>
+		<textarea name="resenha" id="resenha-texto" rows="6" cols="40" placeholder="Digite aqui..."></textarea><br>
 		<button type="submit">Salvar</button>
 		<button type="button" onclick="fecharModal()">Cancelar</button>
 	</form>
@@ -380,8 +430,17 @@ if ($result && $result->num_rows > 0) {
 		document.getElementById('modal-resenha').style.display = 'none';
 		document.getElementById('resenha-texto').value = '';
 	}
-
 	</script>
+	
+	<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const urlParams = new URLSearchParams(window.location.search);
+		const aba = urlParams.get('aba') || 'tbr'; // padrão: tbr
+
+		mostrarSecao(aba.toLowerCase()); // ativa diretamente a aba correta
+	});
+	</script>
+
 
 </body>
 </html>

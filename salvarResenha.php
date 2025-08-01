@@ -12,18 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $livroId = $_POST['livro_id'];
     $resenha = trim($_POST['resenha']);
 
-    if (!empty($resenha)) {
+   
         $stmt = $conn->prepare("UPDATE books SET resenha = ? WHERE id = ? AND usuario_id = ?");
         $stmt->bind_param("sii", $resenha, $livroId, $usuarioId);
 
         if ($stmt->execute()) {
-            header("Location: index.php?msg=resenha_salva");
+            header("Location: index.php?aba=Lidos&msg=resenha_salva");
             exit;
         } else {
             echo "Erro ao salvar a resenha.";
         }
-    } else {
-        echo "A resenha está vazia.";
-    }
+    
 }
 ?>
